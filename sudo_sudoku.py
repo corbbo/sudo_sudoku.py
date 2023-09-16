@@ -141,11 +141,7 @@ def main():
             print("Generate another board? (y/n)")
             if (input() == "y"): continue
             else: return
-        elif (choice == "3"):
-            board = genBoard()
-            printBoard(board)
-            continue
+        elif (choice == "3"): continue
         elif (choice == "4"): return
-        else: print("Invalid choice")
             
 main()

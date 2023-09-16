@@ -7,8 +7,6 @@ The purpose of this program is to solve any sudoku board that's been input by fi
 ## To-Do
 > GUI: because while the terminal looks neat, it doesn't look as neat as an actual user interface
 
-> Random Board Generation: The option to have the program invent a board for it to try to solve instead of the user inputting a new board every time
-
 ------------------------------------
 
 ## Objetivo
@@ -16,5 +14,3 @@ O propósito deste programa é a resolução de qualquer sudoku que é posto com
 
 ## A Fazer
 > Interface Gráfica: pois embora o terminal seja legal, não vai ser tão legal quanto uma interface de verdade
-
-> Geração de Sudoku Aleatório: A opção de fazer com que o programa invente um quebra-cabeça novo ao invez do usuário ter que continuar dando entradas novas

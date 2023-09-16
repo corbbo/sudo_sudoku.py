@@ -3,6 +3,7 @@
 
 import time as t
 import os
+import random
 
 def checkPlay(board, row, col, num):
     """
@@ -86,17 +87,39 @@ def printBoard(board):
             else:
                 print(board[row][col], end = " ")
         print()
+        
+def genBoard():
+    """
+    Generates a random sudoku board
+    :return: board
+    """
+    board = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+             [0, 0, 0, 0, 0 ,0, 0, 0, 0]]
+    
+    for row in range(9):
+        for col in range(9):
+            num = random.randint(1, 9)
+            if (checkPlay(board, row, col, num)): board[row][col] = num
+            else:
+                col -= 1
+                if (col < 0):
+                    col = 8
+                    row -= 1
+                if (row < 0): return genBoard()     # If the random board became unsolvable, starts generating again
+                board[row][col] = 0
+                
+            
+    return board
     
 def main():
-    board = [[0, 0, 0, 0, 3, 0, 0, 0, 0],
-             [0, 0, 0, 0, 2, 0, 0, 0, 0],
-             [0, 0, 0, 0, 1, 0, 0, 0, 0],
-             [0, 0, 7, 1, 4, 8, 2, 0, 0],
-             [6, 9, 2, 3, 5, 7, 4, 8, 1],
-             [0, 0, 5, 2, 9, 6, 3, 0, 0],
-             [0, 0, 0, 0, 7, 0, 0, 0, 0],
-             [0, 0, 0, 0, 8, 0, 0, 0, 0],
-             [0, 0, 0, 0, 6, 0, 0, 0, 0]]
+    board = genBoard()
     printBoard(board)
     print("Press enter to solve the board")
     input()
@@ -105,6 +128,8 @@ def main():
     else: print("No solution found")
     endTime = t.time()
     print("Time elapsed: " + str(endTime - timer) + " seconds")
+    print("Generate another board? (y/n)")
+    if (input() == "y"): main()
+    else: return
     
-
 main()

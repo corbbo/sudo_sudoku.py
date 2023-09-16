@@ -1,5 +1,5 @@
 # sudo_sudoku.py -- A program to solve a sudoku puzzle
-# Thiago Zilberknop, 15-09-2023
+# Thiago Zilberknop, 16-09-2023
 
 import time as t
 import os
@@ -55,7 +55,7 @@ def findEmpty(board):
             if (isEmpty(board, row, col)): return (row, col)
     
     return (-1, -1) # No empty cells found, returns (-1, -1)
-def sudoSudoku(board):
+def sudoSudoku(board, printflag):
     """
     Solves the sudoku board
     :param board: the sudoku board
@@ -64,10 +64,10 @@ def sudoSudoku(board):
     row, col = findEmpty(board)                 # Finds the next empty cell
     if row == -1: return True                   # If no empty cells are found, the board is solved
     for num in range (1, 10):  
-        printBoard(board)                       # Prints new board state 
+        if (printflag == True): printBoard(board)       # Prints new board state 
         if (checkPlay(board, row, col, num)):   # If the attempted play is valid
             board[row][col] = num               # Makes the play
-            if (sudoSudoku(board)): return True # Begins checking the next empty cell recursively; for as long as the next move is valid, the function will keep calling itself until the board is solved
+            if (sudoSudoku(board, printflag)): return True # Begins checking the next empty cell recursively; for as long as the next move is valid, the function will keep calling itself until the board is solved
             else: board[row][col] = 0           # If the recursion fails at some point, the last attempted move is undone and the next number is tried (backtracking)
     return False                                # If no number works for the given cell, the board is unsolvable
 
@@ -88,20 +88,21 @@ def printBoard(board):
                 print(board[row][col], end = " ")
         print()
         
-def genBoard():
+def genBoard(board = []):
     """
     Generates a random sudoku board
     :return: board
     """
-    board = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
-             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
-             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
-             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
-             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
-             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
-             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
-             [0, 0, 0, 0, 0 ,0, 0, 0, 0],
-             [0, 0, 0, 0, 0 ,0, 0, 0, 0]]
+    if (board == []):
+        board = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+                 [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+                 [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+                 [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+                 [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+                 [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+                 [0, 0, 0, 0, 0 ,0, 0, 0, 0],
+                 [0, 0, 0, 0, 0 ,0, 0, 0, 0]]
     
     for row in range(9):
         for col in range(9):
@@ -119,17 +120,32 @@ def genBoard():
     return board
     
 def main():
-    board = genBoard()
-    printBoard(board)
-    print("Press enter to solve the board")
-    input()
-    timer = t.time()
-    if (sudoSudoku(board)): printBoard(board) # If the board is solvable, prints the solution
-    else: print("No solution found")
-    endTime = t.time()
-    print("Time elapsed: " + str(endTime - timer) + " seconds")
-    print("Generate another board? (y/n)")
-    if (input() == "y"): main()
-    else: return
-    
+    choice = 0
+    while (choice != "4"):
+        board = genBoard()
+        printBoard(board)
+        print("[1] Solve this board\n[2] Solve this board printing every play (this will take significantly longer)\n[3] Generate another board\n[4] Exit")
+        choice = input()
+        time = t.time()
+        if (choice == "1"):
+            if (sudoSudoku(board, False)): printBoard(board)
+            else: print("This board is unsolvable")
+            print("Time elapsed: ", t.time() - time, " seconds")
+            print("Generate another board? (y/n)")
+            if (input() == "y"): continue
+            else: return
+        elif (choice == "2"):
+            if (sudoSudoku(board, True)): printBoard(board)
+            else: print("This board is unsolvable")
+            print("Time elapsed: ", t.time() - time, " seconds")
+            print("Generate another board? (y/n)")
+            if (input() == "y"): continue
+            else: return
+        elif (choice == "3"):
+            board = genBoard()
+            printBoard(board)
+            continue
+        elif (choice == "4"): return
+        else: print("Invalid choice")
+            
 main()
